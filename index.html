@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" data-accent="sapphire">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResumePro - Mohan's Interactive Resume & PDF Studio</title>
+  <meta name="description" content="Professional Full-Stack Developer resume and interactive resume builder for Mohan, featuring ATS-optimized templates, live customizer, and one-click PDF export.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📄</text></svg>">
+</head>
+<body>
+  <div class="app-wrapper">
+    <!-- Top Navigation Bar -->
+    <header class="top-navbar no-print">
+      <div class="brand-container">
+        <div class="brand-logo">R</div>
+        <div class="brand-info">
+          <h1>ResumePro Studio</h1>
+          <span>Mohan • Full-Stack Engineer Resume</span>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <button id="btnCopyText" class="btn btn-secondary" title="Copy formatted plain text to clipboard">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          <span class="btn-text">Copy Text</span>
+        </button>
+
+        <button id="btnExportJson" class="btn btn-secondary" title="Export Resume Data as JSON">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span class="btn-text">Save JSON</span>
+        </button>
+
+        <button id="btnImportJson" class="btn btn-secondary" title="Import Resume Data from JSON">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <span class="btn-text">Load JSON</span>
+        </button>
+        <input type="file" id="fileInputJson" accept=".json" style="display:none;">
+
+        <button id="btnPrintPdf" class="btn btn-primary" title="Print or Save as High-Quality PDF">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          <span>Print / PDF</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="app-main">
+      <!-- Left Panel: Customizer & Editor -->
+      <aside class="editor-sidebar no-print">
+        <!-- Tab Navigation -->
+        <nav class="sidebar-tabs">
+          <button class="tab-btn active" data-tab="tab-editor">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+            Edit Content
+          </button>
+          <button class="tab-btn" data-tab="tab-design">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            Templates & Theme
+          </button>
+          <button class="tab-btn" data-tab="tab-ats">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            ATS Score
+          </button>
+        </nav>
+
+        <!-- Sidebar Body -->
+        <div class="sidebar-content">
+          
+          <!-- TAB 1: CONTENT EDITOR -->
+          <div id="tab-editor" class="tab-panel active">
+            
+            <!-- Personal Information -->
+            <div class="form-section">
+              <div class="form-section-title">
+                <span>Personal & Contact Information</span>
+                <button type="button" id="btnResetDefaults" class="btn btn-secondary" style="padding:4px 8px; font-size:11px;">Reset</button>
+              </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <label class="form-label">Full Name</label>
+                  <input type="text" id="inputFullName" class="text-input" placeholder="Full Name">
+                </div>
+                <div class="form-col">
+                  <label class="form-label">Target Job Title</label>
+                  <input type="text" id="inputTitle" class="text-input" placeholder="e.g. Full-Stack Software Engineer">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <label class="form-label">Phone Number</label>
+                  <input type="text" id="inputPhone" class="text-input" placeholder="+91 8220671061">
+                </div>
+                <div class="form-col">
+                  <label class="form-label">Email Address</label>
+                  <input type="email" id="inputEmail" class="text-input" placeholder="email@domain.com">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <label class="form-label">Location</label>
+                  <input type="text" id="inputLocation" class="text-input" placeholder="Salem, Tamil Nadu">
+                </div>
+                <div class="form-col">
+                  <label class="form-label">LinkedIn (Optional)</label>
+                  <input type="text" id="inputLinkedIn" class="text-input" placeholder="linkedin.com/in/username">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-col">
+                  <label class="form-label">GitHub</label>
+                  <input type="text" id="inputGitHub" class="text-input" placeholder="github.com/username">
+                </div>
+                <div class="form-col">
+                  <label class="form-label">Portfolio URL</label>
+                  <input type="text" id="inputPortfolio" class="text-input" placeholder="portfolio.dev">
+                </div>
+              </div>
+            </div>
+
+            <!-- Professional Summary -->
+            <div class="form-section">
+              <div class="form-section-title">
+                <span>Professional Summary</span>
+              </div>
+              <textarea id="inputSummary" class="textarea-input" placeholder="Enter high-impact professional summary..."></textarea>
+            </div>
+
+            <!-- Technical Skills -->
+            <div class="form-section">
+              <div class="form-section-title">
+                <span>Technical Skills</span>
+                <button type="button" class="btn btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="addSkill()">+ Add Category</button>
+              </div>
+              <div id="skillsFormContainer"></div>
+            </div>
+
+            <!-- Work / Internships -->
+            <div class="form-section">
+              <div class="form-section-title">
+                <span>Internships & Experience</span>
+                <button type="button" class="btn btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="addExperience()">+ Add Experience</button>
+              </div>
+              <div id="experienceFormContainer"></div>
+            </div>
+
+            <!-- Projects -->
+            <div class="form-section">
+              <div class="form-section-title">
+                <span>Projects</span>
+                <button type="button" class="btn btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="addProject()">+ Add Project</button>
+              </div>
+              <div id="projectsFormContainer"></div>
+            </div>
+
+            <!-- Education -->
+            <div class="form-section">
+              <div class="form-section-title">
+                <span>Education</span>
+                <button type="button" class="btn btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="addEducation()">+ Add Degree</button>
+              </div>
+              <div id="educationFormContainer"></div>
+            </div>
+
+            <!-- Certifications -->
+            <div class="form-section">
+              <div class="form-section-title">
+                <span>Certifications & Achievements</span>
+                <button type="button" class="btn btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="addCertification()">+ Add Item</button>
+              </div>
+              <div id="certificationsFormContainer"></div>
+            </div>
+
+          </div>
+
+          <!-- TAB 2: DESIGN & TEMPLATES -->
+          <div id="tab-design" class="tab-panel">
+            <!-- Template Grid -->
+            <div class="control-group">
+              <div class="control-header">
+                <span class="control-title">Choose Template</span>
+              </div>
+              <div class="template-grid">
+                <div class="template-card active" data-template="modern-tech">
+                  <div class="template-preview-thumb">
+                    <div class="thumb-bar accent"></div>
+                    <div class="thumb-lines">
+                      <div class="thumb-line"></div>
+                      <div class="thumb-line"></div>
+                    </div>
+                    <div class="thumb-bar" style="width: 80%;"></div>
+                  </div>
+                  <h4>Modern Tech</h4>
+                  <p>Clean developer layout with skill tags and accent borders</p>
+                </div>
+
+                <div class="template-card" data-template="ats-minimalist">
+                  <div class="template-preview-thumb" style="background:#ffffff; border:1px solid #ccc;">
+                    <div class="thumb-bar" style="background:#111; margin:0 auto; width:50%;"></div>
+                    <div class="thumb-lines" style="margin-top:4px;">
+                      <div class="thumb-line" style="background:#444;"></div>
+                      <div class="thumb-line" style="background:#444;"></div>
+                    </div>
+                  </div>
+                  <h4>ATS Standard</h4>
+                  <p>Single column classic high-contrast ATS scanner friendly</p>
+                </div>
+
+                <div class="template-card" data-template="executive-sapphire">
+                  <div class="template-preview-thumb">
+                    <div class="thumb-bar accent" style="width:100%; height:12px; border-radius:0;"></div>
+                    <div class="thumb-lines" style="padding:4px;">
+                      <div class="thumb-line"></div>
+                      <div class="thumb-line"></div>
+                    </div>
+                  </div>
+                  <h4>Executive Header</h4>
+                  <p>Corporate style with prominent accent header banner</p>
+                </div>
+
+                <div class="template-card" data-template="creative-glass">
+                  <div class="template-preview-thumb" style="background:#0f172a; border:1px solid rgba(255,255,255,0.2);">
+                    <div class="thumb-bar" style="background:#38bdf8;"></div>
+                    <div class="thumb-lines">
+                      <div class="thumb-line" style="background:#334155;"></div>
+                      <div class="thumb-line" style="background:#38bdf8;"></div>
+                    </div>
+                  </div>
+                  <h4>Developer Dark</h4>
+                  <p>Sleek terminal & glass dark mode aesthetic</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Accent Color -->
+            <div class="control-group">
+              <div class="control-header">
+                <span class="control-title">Theme Accent Color</span>
+              </div>
+              <div class="color-picker-grid">
+                <button class="color-dot active" data-color="sapphire" title="Sapphire Blue"></button>
+                <button class="color-dot" data-color="emerald" title="Emerald Green"></button>
+                <button class="color-dot" data-color="violet" title="Violet Purple"></button>
+                <button class="color-dot" data-color="crimson" title="Crimson Ruby"></button>
+                <button class="color-dot" data-color="amber" title="Amber Gold"></button>
+                <button class="color-dot" data-color="slate" title="Slate Obsidian"></button>
+              </div>
+            </div>
+
+            <!-- Typography -->
+            <div class="control-group">
+              <div class="control-header">
+                <span class="control-title">Typography & Font</span>
+              </div>
+              <select id="fontSelector" class="select-input">
+                <option value="'Inter', sans-serif">Inter (Modern Clean)</option>
+                <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans (Contemporary)</option>
+                <option value="'Outfit', sans-serif">Outfit (Geometric Tech)</option>
+                <option value="Arial, Helvetica, sans-serif">Arial / Standard (Max ATS)</option>
+                <option value="'Merriweather', serif">Merriweather (Classic Editorial)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- TAB 3: ATS SCORE & INSIGHTS -->
+          <div id="tab-ats" class="tab-panel">
+            <div class="ats-card">
+              <div class="ats-score-display">
+                <div id="atsScoreCircle" class="score-circle">
+                  <span id="atsScoreNumber" class="score-number">95%</span>
+                </div>
+                <div class="ats-meta">
+                  <h4>ATS Ready Score</h4>
+                  <p>Optimized for Applicant Tracking Systems</p>
+                </div>
+              </div>
+
+              <div class="control-title" style="margin-bottom:8px;">Compliance Checklist</div>
+              <ul id="atsChecklist" class="ats-checklist">
+                <!-- Dynamically populated -->
+              </ul>
+            </div>
+
+            <div class="form-section">
+              <div class="form-section-title">Target Job Keyword Match</div>
+              <p style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:10px;">
+                Resume contains key industry buzzwords: <strong>ReactJS, NodeJS, ExpressJS, MySQL, JavaScript, HTML5, CSS3, REST API, Git</strong>.
+              </p>
+              <div class="badge badge-success">✓ 100% Core Keyword Coverage</div>
+            </div>
+          </div>
+
+        </div>
+      </aside>
+
+      <!-- Right Panel: Resume Preview & Action Canvas -->
+      <section class="preview-container">
+        <!-- Floating Canvas Toolbar -->
+        <div class="canvas-toolbar no-print">
+          <div class="toolbar-group">
+            <button id="btnCompactToggle" class="btn btn-secondary" style="padding:6px 12px; font-size:12px;" title="Auto-tune margins to fit onto 1 single page">
+              <span>📐 1-Page Fit: OFF</span>
+            </button>
+          </div>
+
+          <div class="toolbar-group">
+            <button id="btnZoomOut" class="btn btn-secondary btn-icon-only" title="Zoom Out">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            </button>
+            <span id="zoomBadge" class="zoom-badge">100%</span>
+            <button id="btnZoomIn" class="btn btn-secondary btn-icon-only" title="Zoom In">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            </button>
+            <button id="btnZoomReset" class="btn btn-secondary" style="padding:4px 8px; font-size:11px;" title="Reset Zoom">Reset</button>
+          </div>
+        </div>
+
+        <!-- Rendered Resume Document Sheet (Live DOM) -->
+        <div id="resumeSheet" class="resume-sheet template-modern-tech">
+          <!-- Dynamic Content rendered by app.js -->
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
