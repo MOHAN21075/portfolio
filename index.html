@@ -1,328 +1,610 @@
 <!DOCTYPE html>
-<html lang="en" data-accent="sapphire">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ResumePro - Mohan's Interactive Resume & PDF Studio</title>
-  <meta name="description" content="Professional Full-Stack Developer resume and interactive resume builder for Mohan, featuring ATS-optimized templates, live customizer, and one-click PDF export.">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📄</text></svg>">
+  <title>MOHAN.A - Software Engineer &amp; Full-Stack Web Developer Resume</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #0f172a;
+      --accent-color: #1e293b;
+      --link-color: #2563eb;
+      --text-main: #1f2937;
+      --text-muted: #4b5563;
+      --text-light: #6b7280;
+      --border-color: #0f172a;
+      --border-light: #e2e8f0;
+      --bg-page: #ffffff;
+      --tag-bg: #f1f5f9;
+      --line-height: 1.45;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text-main);
+      background-color: #f1f5f9;
+      line-height: var(--line-height);
+      font-size: 13.5px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Action Toolbar (Hidden when printing) */
+    .no-print-toolbar {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .toolbar-title {
+      font-weight: 600;
+      font-size: 14.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #334155;
+      color: #f8fafc;
+    }
+
+    .btn-secondary:hover {
+      background: #475569;
+    }
+
+    /* Resume Container */
+    .resume-wrapper {
+      max-width: 850px;
+      margin: 24px auto 40px auto;
+      background: var(--bg-page);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      border-radius: 4px;
+      padding: 40px 48px;
+    }
+
+    /* Header Section */
+    .header {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .header h1 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--primary-color);
+      margin-bottom: 4px;
+    }
+
+    .header .subtitle {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #334155;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .contact-info a {
+      color: var(--text-muted);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .contact-info a:hover {
+      color: var(--link-color);
+      text-decoration: underline;
+    }
+
+    .contact-links-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 12.5px;
+    }
+
+    .contact-links-row a {
+      color: var(--text-muted);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .contact-links-row a:hover {
+      color: var(--link-color);
+      text-decoration: underline;
+    }
+
+    .icon-svg {
+      width: 14px;
+      height: 14px;
+      vertical-align: -2px;
+      fill: currentColor;
+    }
+
+    /* Section Component */
+    .section {
+      margin-top: 16px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #0f172a;
+      border-bottom: 1.5px solid #0f172a;
+      padding-bottom: 3px;
+      margin-bottom: 8px;
+    }
+
+    .summary-text {
+      text-align: justify;
+      color: #334155;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* Education Item */
+    .edu-item, .exp-item, .project-item {
+      margin-bottom: 12px;
+    }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 2px;
+    }
+
+    .item-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .item-company {
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .item-date {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    .item-subtitle {
+      font-size: 13px;
+      color: #475569;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .item-badge {
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    /* Skills Table */
+    .skills-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .skills-table tr {
+      margin-bottom: 4px;
+    }
+
+    .skills-table td {
+      padding: 2.5px 0;
+      vertical-align: top;
+    }
+
+    .skills-table td.skill-category {
+      font-weight: 700;
+      color: #0f172a;
+      width: 130px;
+      white-space: nowrap;
+    }
+
+    .skills-table td.skill-list {
+      color: #334155;
+    }
+
+    /* Bullet List */
+    .bullet-list {
+      margin-left: 18px;
+      list-style-type: disc;
+    }
+
+    .bullet-list li {
+      margin-bottom: 3px;
+      color: #334155;
+      font-size: 12.8px;
+      line-height: 1.45;
+      text-align: justify;
+    }
+
+    .tech-stack-line {
+      font-size: 12.5px;
+      color: #475569;
+      margin-bottom: 4px;
+    }
+
+    .tech-stack-line strong {
+      color: #1e293b;
+    }
+
+    /* Declaration Section */
+    .declaration-content {
+      font-size: 12.8px;
+      color: #334155;
+      line-height: 1.5;
+      margin-bottom: 10px;
+      text-align: justify;
+    }
+
+    .declaration-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-size: 12.5px;
+      color: #1e293b;
+      margin-top: 4px;
+    }
+
+    .declaration-left p {
+      margin-bottom: 3px;
+    }
+
+    .declaration-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      text-align: right;
+    }
+
+    .signature-image {
+      height: 44px;
+      width: auto;
+      max-width: 160px;
+      object-fit: contain;
+      margin-bottom: -4px;
+      display: block;
+    }
+
+    .declaration-signature {
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: 0.5px;
+    }
+
+    /* Print Specific Styling */
+    @media print {
+      body {
+        background-color: #fff;
+        font-size: 12px;
+        color: #111827;
+      }
+
+      .no-print-toolbar {
+        display: none !important;
+      }
+
+      .resume-wrapper {
+        margin: 0 auto;
+        padding: 0;
+        box-shadow: none;
+        max-width: 100%;
+        width: 100%;
+      }
+
+      .section {
+        margin-top: 10px;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .section-title {
+        font-size: 12px;
+        padding-bottom: 2px;
+        margin-bottom: 6px;
+      }
+
+      .bullet-list li {
+        font-size: 11.5px;
+        margin-bottom: 2px;
+      }
+
+      .skills-table td {
+        padding: 2px 0;
+        font-size: 11.8px;
+      }
+
+      .header h1 {
+        font-size: 22px;
+      }
+
+      .header .subtitle {
+        font-size: 11.5px;
+      }
+
+      .summary-text {
+        font-size: 11.8px;
+      }
+
+      @page {
+        margin: 10mm 12mm;
+        size: A4 portrait;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="app-wrapper">
-    <!-- Top Navigation Bar -->
-    <header class="top-navbar no-print">
-      <div class="brand-container">
-        <div class="brand-logo">R</div>
-        <div class="brand-info">
-          <h1>ResumePro Studio</h1>
-          <span>Mohan • Full-Stack Engineer Resume</span>
-        </div>
+
+  <!-- Top Action Toolbar -->
+  <div class="no-print-toolbar">
+    <div class="toolbar-title">
+      <svg class="icon-svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+      <span>Mohan.A - Resume (Education at Top &bull; Declaration with Signature &amp; Date: 07.09.2026)</span>
+    </div>
+    <div class="toolbar-actions">
+      <button class="btn btn-primary" onclick="window.print()">
+        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+        Print / Save PDF
+      </button>
+    </div>
+  </div>
+
+  <div class="resume-wrapper">
+    <!-- Header -->
+    <header class="header">
+      <h1>MOHAN.A</h1>
+      <div class="subtitle">SOFTWARE ENGINEER &amp; FULL-STACK WEB DEVELOPER</div>
+      
+      <div class="contact-info">
+        <span>📞 +91 8220671061</span>
+        <span>•</span>
+        <span>✉️ <a href="mailto:mohanappaye@gmail.com">mohanappaye@gmail.com</a></span>
+        <span>•</span>
+        <span>📍 Kallakurichi, Tamil Nadu, India</span>
       </div>
-
-      <div class="nav-actions">
-        <button id="btnCopyText" class="btn btn-secondary" title="Copy formatted plain text to clipboard">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-          <span class="btn-text">Copy Text</span>
-        </button>
-
-        <button id="btnExportJson" class="btn btn-secondary" title="Export Resume Data as JSON">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-          <span class="btn-text">Save JSON</span>
-        </button>
-
-        <button id="btnImportJson" class="btn btn-secondary" title="Import Resume Data from JSON">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-          <span class="btn-text">Load JSON</span>
-        </button>
-        <input type="file" id="fileInputJson" accept=".json" style="display:none;">
-
-        <button id="btnPrintPdf" class="btn btn-primary" title="Print or Save as High-Quality PDF">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-          <span>Print / PDF</span>
-        </button>
+      
+      <div class="contact-links-row">
+        <a href="https://in.linkedin.com/in/mohan-a-23021a391" target="_blank" rel="noreferrer">
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.64a1.65 1.65 0 1 0-.01 3.3 1.65 1.65 0 0 0 .01-3.3Z"/></svg>
+          https://in.linkedin.com/in/mohan-a-23021a391
+        </a>
+        <span>•</span>
+        <a href="https://github.com/MOHAN21075" target="_blank" rel="noreferrer">
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2Z"/></svg>
+          https://github.com/MOHAN21075
+        </a>
       </div>
     </header>
 
-    <!-- Main Workspace -->
-    <main class="app-main">
-      <!-- Left Panel: Customizer & Editor -->
-      <aside class="editor-sidebar no-print">
-        <!-- Tab Navigation -->
-        <nav class="sidebar-tabs">
-          <button class="tab-btn active" data-tab="tab-editor">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-            Edit Content
-          </button>
-          <button class="tab-btn" data-tab="tab-design">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            Templates & Theme
-          </button>
-          <button class="tab-btn" data-tab="tab-ats">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-            ATS Score
-          </button>
-        </nav>
+    <!-- 1. PROFESSIONAL SUMMARY -->
+    <section class="section">
+      <h2 class="section-title">Professional Summary</h2>
+      <p class="summary-text">
+        Aspiring Software Engineer and Full-Stack Web Developer with a strong foundation in Python, JavaScript, HTML, CSS, SQL, and web development. Passionate about building responsive, scalable, and user-friendly web applications while applying problem-solving and analytical skills to real-world challenges. Eager to contribute to a growth-oriented organization, develop innovative solutions, and continuously expand technical expertise.
+      </p>
+    </section>
 
-        <!-- Sidebar Body -->
-        <div class="sidebar-content">
-          
-          <!-- TAB 1: CONTENT EDITOR -->
-          <div id="tab-editor" class="tab-panel active">
-            
-            <!-- Personal Information -->
-            <div class="form-section">
-              <div class="form-section-title">
-                <span>Personal & Contact Information</span>
-                <button type="button" id="btnResetDefaults" class="btn btn-secondary" style="padding:4px 8px; font-size:11px;">Reset</button>
-              </div>
-              <div class="form-row">
-                <div class="form-col">
-                  <label class="form-label">Full Name</label>
-                  <input type="text" id="inputFullName" class="text-input" placeholder="Full Name">
-                </div>
-                <div class="form-col">
-                  <label class="form-label">Target Job Title</label>
-                  <input type="text" id="inputTitle" class="text-input" placeholder="e.g. Full-Stack Software Engineer">
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-col">
-                  <label class="form-label">Phone Number</label>
-                  <input type="text" id="inputPhone" class="text-input" placeholder="+91 8220671061">
-                </div>
-                <div class="form-col">
-                  <label class="form-label">Email Address</label>
-                  <input type="email" id="inputEmail" class="text-input" placeholder="email@domain.com">
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-col">
-                  <label class="form-label">Location</label>
-                  <input type="text" id="inputLocation" class="text-input" placeholder="Salem, Tamil Nadu">
-                </div>
-                <div class="form-col">
-                  <label class="form-label">LinkedIn (Optional)</label>
-                  <input type="text" id="inputLinkedIn" class="text-input" placeholder="linkedin.com/in/username">
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-col">
-                  <label class="form-label">GitHub</label>
-                  <input type="text" id="inputGitHub" class="text-input" placeholder="github.com/username">
-                </div>
-                <div class="form-col">
-                  <label class="form-label">Portfolio URL</label>
-                  <input type="text" id="inputPortfolio" class="text-input" placeholder="portfolio.dev">
-                </div>
-              </div>
-            </div>
-
-            <!-- Professional Summary -->
-            <div class="form-section">
-              <div class="form-section-title">
-                <span>Professional Summary</span>
-              </div>
-              <textarea id="inputSummary" class="textarea-input" placeholder="Enter high-impact professional summary..."></textarea>
-            </div>
-
-            <!-- Technical Skills -->
-            <div class="form-section">
-              <div class="form-section-title">
-                <span>Technical Skills</span>
-                <button type="button" class="btn btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="addSkill()">+ Add Category</button>
-              </div>
-              <div id="skillsFormContainer"></div>
-            </div>
-
-            <!-- Work / Internships -->
-            <div class="form-section">
-              <div class="form-section-title">
-                <span>Internships & Experience</span>
-                <button type="button" class="btn btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="addExperience()">+ Add Experience</button>
-              </div>
-              <div id="experienceFormContainer"></div>
-            </div>
-
-            <!-- Projects -->
-            <div class="form-section">
-              <div class="form-section-title">
-                <span>Projects</span>
-                <button type="button" class="btn btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="addProject()">+ Add Project</button>
-              </div>
-              <div id="projectsFormContainer"></div>
-            </div>
-
-            <!-- Education -->
-            <div class="form-section">
-              <div class="form-section-title">
-                <span>Education</span>
-                <button type="button" class="btn btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="addEducation()">+ Add Degree</button>
-              </div>
-              <div id="educationFormContainer"></div>
-            </div>
-
-            <!-- Certifications -->
-            <div class="form-section">
-              <div class="form-section-title">
-                <span>Certifications & Achievements</span>
-                <button type="button" class="btn btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="addCertification()">+ Add Item</button>
-              </div>
-              <div id="certificationsFormContainer"></div>
-            </div>
-
-          </div>
-
-          <!-- TAB 2: DESIGN & TEMPLATES -->
-          <div id="tab-design" class="tab-panel">
-            <!-- Template Grid -->
-            <div class="control-group">
-              <div class="control-header">
-                <span class="control-title">Choose Template</span>
-              </div>
-              <div class="template-grid">
-                <div class="template-card active" data-template="modern-tech">
-                  <div class="template-preview-thumb">
-                    <div class="thumb-bar accent"></div>
-                    <div class="thumb-lines">
-                      <div class="thumb-line"></div>
-                      <div class="thumb-line"></div>
-                    </div>
-                    <div class="thumb-bar" style="width: 80%;"></div>
-                  </div>
-                  <h4>Modern Tech</h4>
-                  <p>Clean developer layout with skill tags and accent borders</p>
-                </div>
-
-                <div class="template-card" data-template="ats-minimalist">
-                  <div class="template-preview-thumb" style="background:#ffffff; border:1px solid #ccc;">
-                    <div class="thumb-bar" style="background:#111; margin:0 auto; width:50%;"></div>
-                    <div class="thumb-lines" style="margin-top:4px;">
-                      <div class="thumb-line" style="background:#444;"></div>
-                      <div class="thumb-line" style="background:#444;"></div>
-                    </div>
-                  </div>
-                  <h4>ATS Standard</h4>
-                  <p>Single column classic high-contrast ATS scanner friendly</p>
-                </div>
-
-                <div class="template-card" data-template="executive-sapphire">
-                  <div class="template-preview-thumb">
-                    <div class="thumb-bar accent" style="width:100%; height:12px; border-radius:0;"></div>
-                    <div class="thumb-lines" style="padding:4px;">
-                      <div class="thumb-line"></div>
-                      <div class="thumb-line"></div>
-                    </div>
-                  </div>
-                  <h4>Executive Header</h4>
-                  <p>Corporate style with prominent accent header banner</p>
-                </div>
-
-                <div class="template-card" data-template="creative-glass">
-                  <div class="template-preview-thumb" style="background:#0f172a; border:1px solid rgba(255,255,255,0.2);">
-                    <div class="thumb-bar" style="background:#38bdf8;"></div>
-                    <div class="thumb-lines">
-                      <div class="thumb-line" style="background:#334155;"></div>
-                      <div class="thumb-line" style="background:#38bdf8;"></div>
-                    </div>
-                  </div>
-                  <h4>Developer Dark</h4>
-                  <p>Sleek terminal & glass dark mode aesthetic</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Accent Color -->
-            <div class="control-group">
-              <div class="control-header">
-                <span class="control-title">Theme Accent Color</span>
-              </div>
-              <div class="color-picker-grid">
-                <button class="color-dot active" data-color="sapphire" title="Sapphire Blue"></button>
-                <button class="color-dot" data-color="emerald" title="Emerald Green"></button>
-                <button class="color-dot" data-color="violet" title="Violet Purple"></button>
-                <button class="color-dot" data-color="crimson" title="Crimson Ruby"></button>
-                <button class="color-dot" data-color="amber" title="Amber Gold"></button>
-                <button class="color-dot" data-color="slate" title="Slate Obsidian"></button>
-              </div>
-            </div>
-
-            <!-- Typography -->
-            <div class="control-group">
-              <div class="control-header">
-                <span class="control-title">Typography & Font</span>
-              </div>
-              <select id="fontSelector" class="select-input">
-                <option value="'Inter', sans-serif">Inter (Modern Clean)</option>
-                <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans (Contemporary)</option>
-                <option value="'Outfit', sans-serif">Outfit (Geometric Tech)</option>
-                <option value="Arial, Helvetica, sans-serif">Arial / Standard (Max ATS)</option>
-                <option value="'Merriweather', serif">Merriweather (Classic Editorial)</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- TAB 3: ATS SCORE & INSIGHTS -->
-          <div id="tab-ats" class="tab-panel">
-            <div class="ats-card">
-              <div class="ats-score-display">
-                <div id="atsScoreCircle" class="score-circle">
-                  <span id="atsScoreNumber" class="score-number">95%</span>
-                </div>
-                <div class="ats-meta">
-                  <h4>ATS Ready Score</h4>
-                  <p>Optimized for Applicant Tracking Systems</p>
-                </div>
-              </div>
-
-              <div class="control-title" style="margin-bottom:8px;">Compliance Checklist</div>
-              <ul id="atsChecklist" class="ats-checklist">
-                <!-- Dynamically populated -->
-              </ul>
-            </div>
-
-            <div class="form-section">
-              <div class="form-section-title">Target Job Keyword Match</div>
-              <p style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:10px;">
-                Resume contains key industry buzzwords: <strong>ReactJS, NodeJS, ExpressJS, MySQL, JavaScript, HTML5, CSS3, REST API, Git</strong>.
-              </p>
-              <div class="badge badge-success">✓ 100% Core Keyword Coverage</div>
-            </div>
-          </div>
-
+    <!-- 2. EDUCATION (Positioned directly after Professional Summary, before Technical Skills) -->
+    <section class="section">
+      <h2 class="section-title">Education</h2>
+      <div class="edu-item">
+        <div class="item-header">
+          <span class="item-title">AKT Memorial College of Engineering and Technology</span>
+          <span class="item-date">2023 – 2027</span>
         </div>
-      </aside>
-
-      <!-- Right Panel: Resume Preview & Action Canvas -->
-      <section class="preview-container">
-        <!-- Floating Canvas Toolbar -->
-        <div class="canvas-toolbar no-print">
-          <div class="toolbar-group">
-            <button id="btnCompactToggle" class="btn btn-secondary" style="padding:6px 12px; font-size:12px;" title="Auto-tune margins to fit onto 1 single page">
-              <span>📐 1-Page Fit: OFF</span>
-            </button>
-          </div>
-
-          <div class="toolbar-group">
-            <button id="btnZoomOut" class="btn btn-secondary btn-icon-only" title="Zoom Out">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            </button>
-            <span id="zoomBadge" class="zoom-badge">100%</span>
-            <button id="btnZoomIn" class="btn btn-secondary btn-icon-only" title="Zoom In">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            </button>
-            <button id="btnZoomReset" class="btn btn-secondary" style="padding:4px 8px; font-size:11px;" title="Reset Zoom">Reset</button>
-          </div>
+        <div class="item-subtitle">
+          <span><strong>B.Tech in Artificial Intelligence and Data Science</strong> • <span class="item-badge">CGPA: 7.5 / 10.0</span></span>
         </div>
-
-        <!-- Rendered Resume Document Sheet (Live DOM) -->
-        <div id="resumeSheet" class="resume-sheet template-modern-tech">
-          <!-- Dynamic Content rendered by app.js -->
+        <div style="font-size: 12.8px; color: #475569;">
+          Higher Secondary (HSC): <strong>77.4%</strong> &nbsp;|&nbsp; Secondary (SSLC): <strong>85.8%</strong>
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
+
+    <!-- 3. TECHNICAL SKILLS (Positioned after Education) -->
+    <section class="section">
+      <h2 class="section-title">Technical Skills</h2>
+      <table class="skills-table">
+        <tr>
+          <td class="skill-category">Languages:</td>
+          <td class="skill-list">Python, JavaScript, CSS, HTML, SQL</td>
+        </tr>
+        <tr>
+          <td class="skill-category">Frontend:</td>
+          <td class="skill-list">ReactJS, Angular, HTML5, CSS3, Responsive Design, State Management</td>
+        </tr>
+        <tr>
+          <td class="skill-category">Backend:</td>
+          <td class="skill-list">NodeJS, ExpressJS, RESTful APIs, JSON Web Tokens (JWT)</td>
+        </tr>
+        <tr>
+          <td class="skill-category">Databases:</td>
+          <td class="skill-list">MySQL, Relational Schema Design, Query Optimization</td>
+        </tr>
+        <tr>
+          <td class="skill-category">Tools &amp; DevOps:</td>
+          <td class="skill-list">Git, GitHub, VS Code, Postman, Webpack, Chrome DevTools</td>
+        </tr>
+      </table>
+    </section>
+
+    <!-- 4. WORK & INTERNSHIP EXPERIENCE -->
+    <section class="section">
+      <h2 class="section-title">Work &amp; Internship Experience</h2>
+      
+      <div class="exp-item">
+        <div class="item-header">
+          <div>
+            <span class="item-company">Full Stack Web Developer Intern</span> • <span style="font-weight:600; color:#2563eb;">SkillUpgrade</span>
+          </div>
+          <span class="item-date">2026</span>
+        </div>
+        <div class="item-subtitle">
+          <span>Remote / Hybrid</span>
+        </div>
+        <ul class="bullet-list">
+          <li>Architected and deployed responsive full-stack features using ReactJS, NodeJS, ExpressJS, and MySQL.</li>
+          <li>Engineered RESTful API endpoints for seamless front-to-back communication and authenticated workflows.</li>
+          <li>Conducted code reviews, maintained Git version control workflows, and optimized database queries for fast response times.</li>
+        </ul>
+      </div>
+
+      <div class="exp-item">
+        <div class="item-header">
+          <div>
+            <span class="item-company">Web Development Intern</span> • <span style="font-weight:600; color:#2563eb;">CodSoft</span>
+          </div>
+          <span class="item-date">2025</span>
+        </div>
+        <div class="item-subtitle">
+          <span>Remote</span>
+        </div>
+        <ul class="bullet-list">
+          <li>Developed cross-browser responsive user interfaces with HTML5, CSS3, and modern JavaScript.</li>
+          <li>Improved website performance and Core Web Vitals, enhancing UI responsiveness across mobile and desktop devices.</li>
+          <li>Collaborated on agile sprint tasks and delivered clean, maintainable, modular codebase components.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 5. KEY PROJECTS -->
+    <section class="section">
+      <h2 class="section-title">Key Projects</h2>
+      
+      <div class="project-item">
+        <div class="item-header">
+          <span class="item-title">Intelligent Cloud Resource Monitoring and Cost Optimization Platform</span>
+          <span class="item-date">2026</span>
+        </div>
+        <div class="tech-stack-line">
+          <strong>Tech Stack:</strong> Scikit-learn, Pandas, NumPy, Flask / FastAPI, HTML, CSS, JavaScript
+        </div>
+        <ul class="bullet-list">
+          <li>Developed a cloud resource monitoring platform to track CPU, memory, storage, and resource utilization.</li>
+          <li>Implemented real-time monitoring and analytics to identify underutilized and over-provisioned cloud resources.</li>
+          <li>Analyzed cloud usage patterns to identify opportunities for cost reduction and resource optimization.</li>
+          <li>Integrated data visualization dashboards to present resource usage, performance metrics, and cost insights.</li>
+          <li>Designed an intelligent recommendation system to suggest resource scaling and optimization strategies.</li>
+          <li>Applied machine learning/data analytics techniques to support predictive resource management and cost forecasting.</li>
+          <li>Focused on improving cloud efficiency, performance, scalability, and operational cost management.</li>
+        </ul>
+      </div>
+
+      <div class="project-item">
+        <div class="item-header">
+          <span class="item-title">Modern Developer Portfolio Website</span>
+          <span class="item-date">2025</span>
+        </div>
+        <div class="tech-stack-line">
+          <strong>Tech Stack:</strong> HTML5, CSS3, JavaScript, GitHub Pages
+        </div>
+        <ul class="bullet-list">
+          <li>Designed and launched an interactive, responsive developer portfolio showcasing web applications and technical skills.</li>
+          <li>Optimized asset loading and typography rendering to achieve 95+ Google Lighthouse performance scores.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 6. CERTIFICATIONS & ACHIEVEMENTS -->
+    <section class="section">
+      <h2 class="section-title">Certifications &amp; Achievements</h2>
+      <ul class="bullet-list">
+        <li>MERN Stack Web Development Specialization</li>
+        <li>Prompt Engineering &amp; Generative AI Best Practices</li>
+        <li>Online Portfolio Development &amp; CI/CD using GitHub</li>
+      </ul>
+    </section>
+
+    <!-- 7. DECLARATION (At the bottom of the resume) -->
+    <section class="section">
+      <h2 class="section-title">Declaration</h2>
+      <p class="declaration-content">
+        I hereby declare that all the information provided above is true and correct to the best of my knowledge and belief.
+      </p>
+      <div class="declaration-footer">
+        <div class="declaration-left">
+          <p><strong>Place:</strong> Kallakurichi, Tamil Nadu, India</p>
+          <p><strong>Date:</strong> 07.09.2026</p>
+        </div>
+        <div class="declaration-right">
+          <img src="signature.png" alt="Signature of Mohan.A" class="signature-image" />
+          <div class="declaration-signature">(MOHAN.A)</div>
+        </div>
+      </div>
+    </section>
   </div>
 
-  <script src="app.js"></script>
 </body>
 </html>
